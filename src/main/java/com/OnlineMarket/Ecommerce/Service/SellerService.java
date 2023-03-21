@@ -1,12 +1,14 @@
 package com.OnlineMarket.Ecommerce.Service;
 
-import com.OnlineMarket.Ecommerce.DTO.SellerRequestDto;
-import com.OnlineMarket.Ecommerce.DTO.SellerResponseDto;
+import com.OnlineMarket.Ecommerce.Convertor.SellerConvertor;
 import com.OnlineMarket.Ecommerce.Model.Seller;
 import com.OnlineMarket.Ecommerce.Repository.SellerRepository;
+import com.OnlineMarket.Ecommerce.RequestDTO.SellerRequestDto;
+import com.OnlineMarket.Ecommerce.ResponseDTO.SellerResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,24 +16,20 @@ public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
-    public SellerResponseDto addSeller(SellerRequestDto sellerRequestDto){
-        Seller seller = new Seller();
-        seller.setEmail(sellerRequestDto.getEmail());
-        seller.setName(sellerRequestDto.getName());
-        seller.setPanCard(sellerRequestDto.getPanCard());
-        seller.setMobileNo(sellerRequestDto.getMobNo());
-
-        Seller addedSeller = sellerRepository.save(seller);
-
-        SellerResponseDto sellerResponseDto = new SellerResponseDto();
-        sellerResponseDto.setName(addedSeller.getName());
-        sellerResponseDto.setEmail(addedSeller.getEmail());
-        sellerResponseDto.setMobileNo(addedSeller.getMobileNo());
-
-        return sellerResponseDto;
+    public String  addSeller(SellerRequestDto sellerRequestDto){
+        Seller seller = SellerConvertor.sellerRequestDtoToSeller(sellerRequestDto);
+        sellerRepository.save(seller);
+        return "Congrats! Now you can sell on Online Market !!!";
     }
 
-    public List<Seller> getSellers(){
-        return sellerRepository.findAll();
+    public List<SellerResponseDto> getSellers(){
+
+        List<Seller> sellers = sellerRepository.findAll();
+        List<SellerResponseDto> sellerResponseDtoList = new ArrayList<>();
+        for(Seller seller : sellers){
+            SellerResponseDto sellerResponseDto = SellerConvertor.sellerToSellerResponseList(seller);
+            sellerResponseDtoList.add(sellerResponseDto);
+        }
+        return sellerResponseDtoList;
     }
 }

@@ -1,9 +1,6 @@
 package com.OnlineMarket.Ecommerce.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.CustomLog;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Seller {
 
     @Id

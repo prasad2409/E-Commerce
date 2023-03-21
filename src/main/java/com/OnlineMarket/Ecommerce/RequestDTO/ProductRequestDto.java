@@ -1,14 +1,15 @@
-package com.OnlineMarket.Ecommerce.DTO;
+package com.OnlineMarket.Ecommerce.RequestDTO;
 
 import com.OnlineMarket.Ecommerce.Enum.ProductCategory;
-import com.OnlineMarket.Ecommerce.Enum.ProductStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductRequestDto {
     private String name;
     private int price;

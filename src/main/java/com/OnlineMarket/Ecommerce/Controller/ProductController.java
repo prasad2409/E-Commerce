@@ -1,9 +1,9 @@
 package com.OnlineMarket.Ecommerce.Controller;
 
-import com.OnlineMarket.Ecommerce.DTO.ProductCategoryRequestDto;
-import com.OnlineMarket.Ecommerce.DTO.ProductRequestDto;
-import com.OnlineMarket.Ecommerce.DTO.ProductResponseDto;
-import com.OnlineMarket.Ecommerce.Model.Product;
+import com.OnlineMarket.Ecommerce.Enum.ProductCategory;
+import com.OnlineMarket.Ecommerce.Exception.SellerNotFoundException;
+import com.OnlineMarket.Ecommerce.RequestDTO.ProductRequestDto;
+import com.OnlineMarket.Ecommerce.ResponseDTO.ProductResponseDto;
 import com.OnlineMarket.Ecommerce.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,19 @@ public class ProductController {
     ProductService productService;
 
     @PostMapping("/add")
-    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto productRequestDto){
-        ProductResponseDto productResponseDto = productService.addProduct(productRequestDto);
-        return new ResponseEntity<>(productResponseDto, HttpStatus.CREATED);
+    public ResponseEntity addProduct(@RequestBody ProductRequestDto productRequestDto) throws SellerNotFoundException {
+        ProductResponseDto productResponseDto;
+
+        try {
+            productResponseDto = productService.addProduct(productRequestDto);
+        }
+        catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(productResponseDto,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/get/category/{productCategory}")
+    public List<ProductResponseDto> getProductByCategory(@PathVariable("productCategory") ProductCategory productCategory){
+        return productService.getProductByCategory(productCategory);
     }
 }
