@@ -21,10 +21,18 @@ public class SellerService {
         sellerRepository.save(seller);
         return "Congrats! Now you can sell on Online Market !!!";
     }
-
     public List<SellerResponseDto> getSellers(){
 
         List<Seller> sellers = sellerRepository.findAll();
+        List<SellerResponseDto> sellerResponseDtoList = new ArrayList<>();
+        for(Seller seller : sellers){
+            SellerResponseDto sellerResponseDto = SellerConvertor.sellerToSellerResponseList(seller);
+            sellerResponseDtoList.add(sellerResponseDto);
+        }
+        return sellerResponseDtoList;
+    }
+    public List<SellerResponseDto> getSellerByPanCard(String panCard){
+        List<Seller> sellers = sellerRepository.findByPanCard(panCard);
         List<SellerResponseDto> sellerResponseDtoList = new ArrayList<>();
         for(Seller seller : sellers){
             SellerResponseDto sellerResponseDto = SellerConvertor.sellerToSellerResponseList(seller);

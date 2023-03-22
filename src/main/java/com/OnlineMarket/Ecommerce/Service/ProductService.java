@@ -2,7 +2,6 @@ package com.OnlineMarket.Ecommerce.Service;
 
 import com.OnlineMarket.Ecommerce.Convertor.ProductConvertor;
 import com.OnlineMarket.Ecommerce.Enum.ProductCategory;
-import com.OnlineMarket.Ecommerce.Enum.ProductStatus;
 import com.OnlineMarket.Ecommerce.Exception.SellerNotFoundException;
 import com.OnlineMarket.Ecommerce.Model.Product;
 import com.OnlineMarket.Ecommerce.Model.Seller;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
 public class ProductService {
     @Autowired
@@ -23,6 +21,8 @@ public class ProductService {
 
     @Autowired
     SellerRepository sellerRepository;
+
+
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) throws SellerNotFoundException {
         Seller seller;
 
