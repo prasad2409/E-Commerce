@@ -1,18 +1,17 @@
 package com.OnlineMarket.Ecommerce.ResponseDTO;
 
-import lombok.*;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CustomerResponseDto {
-
+public class AllCustomerResponseDto {
     private String name;
-    private String mobNo;
     private String email;
-    private int age;
-    List<CardDto> cardDtoList;
+    private String mobNo;
+
 }
