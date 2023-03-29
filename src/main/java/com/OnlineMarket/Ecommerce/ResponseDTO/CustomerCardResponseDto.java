@@ -8,7 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerResponseDto {
+public class CustomerCardResponseDto {
 
     private String name;
     private String mobNo;

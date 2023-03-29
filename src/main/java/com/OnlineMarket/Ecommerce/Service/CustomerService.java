@@ -7,9 +7,9 @@ import com.OnlineMarket.Ecommerce.Model.Cart;
 import com.OnlineMarket.Ecommerce.Model.Customer;
 import com.OnlineMarket.Ecommerce.Repository.CustomerRepository;
 import com.OnlineMarket.Ecommerce.RequestDTO.CustomerRequestDto;
-import com.OnlineMarket.Ecommerce.ResponseDTO.AllCustomerResponseDto;
-import com.OnlineMarket.Ecommerce.ResponseDTO.CardDto;
 import com.OnlineMarket.Ecommerce.ResponseDTO.CustomerResponseDto;
+import com.OnlineMarket.Ecommerce.ResponseDTO.CardDto;
+import com.OnlineMarket.Ecommerce.ResponseDTO.CustomerCardResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class CustomerService {
         return "Congrats!! Welcome to Online Market";
     }
 
-    public CustomerResponseDto getCustomerById(int customerId) throws CustomerNotFound {
+    public CustomerCardResponseDto getCustomerById(int customerId) throws CustomerNotFound {
         Customer customer;
         try {
             customer = customerRepository.findById(customerId).get();
@@ -42,11 +42,11 @@ public class CustomerService {
             throw new CustomerNotFound("Invalid customer id");
         }
 
-        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
-        customerResponseDto.setName(customer.getName());
-        customerResponseDto.setEmail(customer.getEmail());
-        customerResponseDto.setMobNo(customer.getMobileNo());
-        customerResponseDto.setAge(customer.getAge());
+        CustomerCardResponseDto customerCardResponseDto = new CustomerCardResponseDto();
+        customerCardResponseDto.setName(customer.getName());
+        customerCardResponseDto.setEmail(customer.getEmail());
+        customerCardResponseDto.setMobNo(customer.getMobileNo());
+        customerCardResponseDto.setAge(customer.getAge());
 
         List<CardDto> dtoList = new ArrayList<>();
         for(Card card : customer.getCards()){
@@ -56,30 +56,48 @@ public class CustomerService {
             dtoList.add(cardDto);
         }
 
-        customerResponseDto.setCardDtoList(dtoList);
+        customerCardResponseDto.setCardDtoList(dtoList);
 
-        return customerResponseDto;
+        return customerCardResponseDto;
     }
 
-    public List<AllCustomerResponseDto> getAllCustomers(){
+    public List<CustomerResponseDto> getAllCustomers(){
 
         List<Customer> customer = customerRepository.findAll();
-        List<AllCustomerResponseDto> allCustomerResponseDtoList = new ArrayList<>();
+        List<CustomerResponseDto> customerResponseDtoList = new ArrayList<>();
 
         for(Customer customer1 : customer){
-            AllCustomerResponseDto allCustomerResponseDto = new AllCustomerResponseDto();
+            CustomerResponseDto customerResponseDto = new CustomerResponseDto();
 
-            allCustomerResponseDto.setName(customer1.getName());
-            allCustomerResponseDto.setEmail(customer1.getEmail());
-            allCustomerResponseDto.setMobNo(customer1.getMobileNo());
+            customerResponseDto.setName(customer1.getName());
+            customerResponseDto.setEmail(customer1.getEmail());
+            customerResponseDto.setMobNo(customer1.getMobileNo());
 
-            allCustomerResponseDtoList.add(allCustomerResponseDto);
+            customerResponseDtoList.add(customerResponseDto);
         }
 
-        return allCustomerResponseDtoList;
+        return customerResponseDtoList;
     }
     public String deleteCustomer(int id){
         customerRepository.deleteById(id);
         return "Customer is Deleted";
+    }
+    public CustomerResponseDto updateCustomer(int id,String mobNo,String email) throws CustomerNotFound {
+        Customer customer;
+        try {
+            customer = customerRepository.findById(id).get();
+        }
+        catch (Exception e){
+            throw new CustomerNotFound("Invalid customer Id");
+        }
+        customer.setMobileNo(mobNo);
+        customer.setEmail(email);
+        Customer updatedCustomer = customerRepository.save(customer);
+        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
+        customerResponseDto.setName(updatedCustomer.getName());
+        customerResponseDto.setEmail(updatedCustomer.getEmail());
+        customerResponseDto.setMobNo(updatedCustomer.getMobileNo());
+
+        return customerResponseDto;
     }
 }
